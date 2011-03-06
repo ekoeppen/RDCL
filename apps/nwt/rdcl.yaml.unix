@@ -1,0 +1,5 @@
+# This is an example settings file for Unix systems.
+
+serial_port: /dev/cu.usbserial
+serial_speed: 38400
+io_root: /home/username/Newton/Sync/

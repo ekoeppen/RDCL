@@ -1,0 +1,52 @@
+VERSION 0.2
+
+INTRODUCTION
+
+This is the RDCL library. It provides a framework to connect to the Newton
+MessagePad (OS 2.0 and later) via the built-in Dock protocol. Connections
+are usually via serial cable, but the higher level protocol layers can
+also be run over any other connection method such as TCP/IP.
+
+RDCL is written in Ruby, with a small helper module written in C for
+Unix systems to interface with the serial port.
+
+INSTALLATION
+
+RDCL requires Ruby 1.8 or 1.9 on Windows systems, and Ruby 1.9 on Unix systems.
+Rake is required for installation.
+
+To install, download the latest RDCL package and extract it. Then, use
+
+  rake compile
+
+to compile the helper module (not needed on Windows) and
+
+  rake install (Windows)
+
+or 
+
+  sudo rake install (Unix)
+
+to install the library and applications. The RDCL library will be installed
+in the same directory as other Ruby librarries under rdcl/..., and the
+applications will be installed in /usr/local/bin under Unix and
+\winnt\system32 under Windows.
+
+APPLICATIONS
+
+nwt: Command line application to interact with the Newton. See
+
+  nwt --help
+  
+after installation for more information.
+
+CONTRIBUTING
+
+Please check the feature tracker at
+http://sourceforge.net/tracker2/?group_id=246633&atid=1126127 for contribution
+areas.
+
+DOCUMENTATION
+
+The Newton Docking Protocol is currently found at
+http://40hz.org/wiki/index.php/Newton_Docking_Protocol

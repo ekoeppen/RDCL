@@ -1,0 +1,23 @@
+#!/bin/bash
+
+r=""
+
+if [[ $RUBY1_9 != "" ]] ; then
+	r=$RUBY_1.9
+else
+	ruby=`which ruby 2>/dev/null`
+	ruby1_9=`which ruby1.9 2>/dev/null`
+
+	if test -x "$ruby1_9" ;	then
+		r=$ruby1_9
+	elif test -x "$ruby" && [[ `$ruby --version | cut -c 6-8` == "1.9" ]] ; then
+			r=$ruby
+	fi
+fi
+
+if [[ $r == "" ]] ; then
+	echo "Ruby 1.9 not found"
+	exit 1
+else
+	$r -e "require 'rdcl/apps/nwt/nwt.rb'" -- $@
+fi

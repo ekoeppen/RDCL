@@ -1,0 +1,5 @@
+# This is an example settings file for Windows systems.
+
+serial_port: COM1
+serial_speed: 38400
+io_root: "c:/documents and settings/Administrator/Newton/"
