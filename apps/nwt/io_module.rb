@@ -128,11 +128,17 @@ module IoModule
 
     if @flags[:convert]
       suffix = "txt"
-      if body[:"IC/VC:40hz"] and body[:"IC/VC:40hz"][:suffix] then suffix = body[:"IC/VC:40hz"][:suffix] end
-      if body[:title] then basename = @io_inbox + body[:title] end
+      text = ""
+      if body.class == String then
+        text = body
+      else
+        if body[:"IC/VC:40hz"] and body[:"IC/VC:40hz"][:suffix] then suffix = body[:"IC/VC:40hz"][:suffix] end
+        if body[:title] then basename = @io_inbox + body[:title] end
+        text = body[:text]
+      end
 
       File.open(basename + "." + suffix, "wb") do |f|
-        f.write(body[:text])
+        f.write(text)
       end
     else
       File.open(basename + ".nsof", "wb") do |f|
