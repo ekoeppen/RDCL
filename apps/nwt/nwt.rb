@@ -24,26 +24,42 @@ class NWT < Actor
   attr_accessor :settings
   attr_accessor :dock
   attr_accessor :opts
+  attr_accessor :opts_array
   attr_accessor :cmd
   attr_accessor :flags
   attr_accessor :newton_stores
   attr_accessor :current_store
   attr_accessor :cursor
   attr_accessor :cmd_line_settings
-  
+  attr_accessor :user_modules
+
   include InstallModule
   include InfoModule
   include QueryModule
   include IoModule
   include ExportModule
   
+  def load_user_modules
+    @user_modules = Array.new
+    if Dir.exists?(ENV["HOME"] + "/.nwt")
+      Dir[ENV["HOME"] + "/.nwt/*_module.rb"].each do |f|
+        full_name = File.basename(f).gsub(/(^|_)(.)/) { $2.upcase }[0..-4] 
+        short_name = File.basename(f).gsub("_module.rb", "")
+        @user_modules << short_name
+        load f
+        extend Object.const_get(full_name)
+        @opts_array += send((short_name + "_get_opts").intern)
+      end
+    end
+  end
+
   def initialize
     super()
     @stat = :idle
     @flags = {}
     @cmd_line_settings = {}
     
-    opts = [
+    @opts_array = [
       ["--help", "-h", GetoptLong::NO_ARGUMENT],
       ["--verbose", "-v", GetoptLong::NO_ARGUMENT],
       ["--quiet", "-q", GetoptLong::NO_ARGUMENT],
@@ -56,10 +72,12 @@ class NWT < Actor
       ["--show-settings", GetoptLong::NO_ARGUMENT],
       ["--convert", "-c", GetoptLong::NO_ARGUMENT]
     ]
-    
-    opts += io_get_opts + info_get_opts + install_get_opts + export_get_opts
 
-    @opts = GetoptLong.new(*opts)
+    @opts_array += io_get_opts + info_get_opts + install_get_opts + export_get_opts
+
+    load_user_modules
+    
+    @opts = GetoptLong.new(*@opts_array)
     
     transition do |state, action|
       log_action(state, action)
@@ -155,6 +173,9 @@ EOT
     h += "  Current settings are stored in #{Platform.settings_file}\n"
     h += "\nOPERATIONS\n\n"
     h += info_usage + install_usage + io_usage + export_usage
+    @user_modules.each do |m|
+      h += send((m + "_usage").intern)
+    end
     puts h
   end
   
@@ -179,6 +200,9 @@ EOT
       info_handle_opts(opt, arg)
       io_handle_opts(opt, arg)
       export_handle_opts(opt, arg)
+      @user_modules.each do |m|
+        send((m + "_handle_opts").intern, opt, arg)
+      end
 
       case opt
       when "--help" then @cmd = "help"; show_help; continue = nil
