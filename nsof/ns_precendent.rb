@@ -19,7 +19,6 @@ module RDCL
     end
     
     def from_nsof(b, factory)
-      super(b, factory)
       b.slice!(0)
       @value = NSOF::decode_xlong(b)
     end
