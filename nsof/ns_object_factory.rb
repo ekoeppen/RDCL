@@ -37,6 +37,10 @@ module RDCL
     ]
     
     def initialize
+      reset
+    end
+
+    def reset
       @objects = []
     end
 
