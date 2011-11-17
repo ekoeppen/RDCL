@@ -89,7 +89,7 @@ EOT
       "-" + e[:_uniqueID].to_s 
 
     File.open(basename + ".nsof", "wb") do |f|
-      f.write(NSOF::NSOFVERSION.chr + e.to_nsof)
+      f.write(data[:nsof])
     end
   end
   
