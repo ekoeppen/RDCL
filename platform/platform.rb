@@ -1,5 +1,5 @@
 require 'rbconfig'
-require "rdcl/platform/win32/system_info_win32" if Config::CONFIG["arch"] =~ /win32/ or Config::CONFIG["arch"] =~ /mingw32/  
+require "rdcl/platform/win32/system_info_win32" if RbConfig::CONFIG["arch"] =~ /win32/ or RbConfig::CONFIG["arch"] =~ /mingw32/  
 
 class Platform
   
@@ -14,19 +14,19 @@ class Platform
   end
   
   def Platform.isCygwin?
-    Config::CONFIG["arch"] =~ /cygwin/
+    RbConfig::CONFIG["arch"] =~ /cygwin/
   end
   
   def Platform.isMingw32?
-    Config::CONFIG["arch"] =~ /mingw32/
+    RbConfig::CONFIG["arch"] =~ /mingw32/
   end
   
   def Platform.isMSWin32?
-    Config::CONFIG["arch"] =~ /mswin32/
+    RbConfig::CONFIG["arch"] =~ /mswin32/
   end
 
   def Platform.isBCCWin32?
-    Config::CONFIG["arch"] =~ /bccwin32/
+    RbConfig::CONFIG["arch"] =~ /bccwin32/
   end
   
   def Platform.settings_file

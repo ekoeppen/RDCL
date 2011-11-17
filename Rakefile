@@ -111,7 +111,7 @@ task :install do
     exit 1
   end
 
-  dest = Config::CONFIG["rubylibdir"] + "/rdcl/"
+  dest = RbConfig::CONFIG["rubylibdir"] + "/rdcl/"
   FileUtils.remove_dir(dest, :force => true)
   FileUtils.mkdir(dest, :mode => 0755 )
   dirs = Array(INST_DIRS)
