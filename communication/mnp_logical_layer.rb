@@ -52,7 +52,7 @@ module RDCL
     def send_link_request_response
       @max_info_length = @packet.max_info_length
       if @packet.data_phase_opt & 1 == 1
-        @max_info_length = 240
+        @max_info_length = 256
       end
       @window_size = @packet.max_outstanding
       @local_credit = @window_size

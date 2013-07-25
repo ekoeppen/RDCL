@@ -24,7 +24,7 @@ module RDCL
         2, 1, @framing_mode,
         3, 1, @max_outstanding,
         4, 2, @max_info_length,
-        8, 1, @data_phase_opt].pack("CC C CCCCCCCC CCC CCC CCn CCC")
+        8, 1, @data_phase_opt].pack("CC C CCCCCCCC CCC CCC CCv CCC")
       return b;
     end
     
@@ -48,7 +48,7 @@ module RDCL
       b.slice!(0, n)
 
       n = 4
-      c = b.unpack("CCn")
+      c = b.unpack("CCv")
       @max_info_length = c[2]
       b.slice!(0, n)
 
