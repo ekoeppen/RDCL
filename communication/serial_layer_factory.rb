@@ -14,21 +14,12 @@ module RDCL
 
     def SerialLayerFactory.create
       if Platform.isWindows?
-        if RUBY_VERSION =~ /1.9/
-#          return SerialLayerWin32Threaded.new
-          return SerialLayerWin32.new
-        else
-          return SerialLayerWin32.new
-        end
+        return SerialLayerWin32.new
       else
-        if RUBY_VERSION =~ /1.9/
-          return SerialLayerPosixThreaded.new
-        else
-          return SerialLayerPosix.new
-        end
+        return SerialLayerPosixThreaded.new
       end
     end
-    
+
   end
-  
+
 end

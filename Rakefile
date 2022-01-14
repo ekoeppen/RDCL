@@ -90,26 +90,17 @@ end
 
 task :compile do
   if Platform::isPosix?
-    if RUBY_VERSION =~ /1.9/
-      Rake::Task["compile_serial_support"].invoke 
-    else
-      puts "Ruby 1.9 required."
-      exit 1
-    end
+    Rake::Task["compile_serial_support"].invoke
   end
 end
 
 task :clean do
   if Platform::isPosix?
-    Rake::Task["clean_serial_support"].invoke 
+    Rake::Task["clean_serial_support"].invoke
   end
 end
 
 task :install do
-  if Platform::isPosix? and not RUBY_VERSION =~ /1.9/
-    puts "Ruby 1.9 required."
-    exit 1
-  end
 
   dest = RbConfig::CONFIG["rubylibdir"] + "/rdcl/"
   FileUtils.remove_dir(dest, :force => true)
