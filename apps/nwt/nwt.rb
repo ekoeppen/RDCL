@@ -81,14 +81,15 @@ class NWT < Actor
     
     transition do |state, action|
       log_action(state, action)
-      state = send("#{@cmd}_transition", state, action)
       case action.command
       when AppCmd::CONNECTED then
+        sleep(1)
         log "Connected."
       when AppCmd::DISCONNECTED then
         log "Disconnected."
         exit
       end
+      state = send("#{@cmd}_transition", state, action)
       state
     end
   end
