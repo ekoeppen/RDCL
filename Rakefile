@@ -6,7 +6,7 @@ load "VERSION.rb"
 BIN_DIR = "/usr/local/bin/"
 
 if Platform::isWindows?
-  BIN_DIR_WIN = ENV[:SystemRoot] + "\\system32\\"
+  BIN_DIR_WIN = ENV["SystemRoot"] + "\\system32\\"
 end
 
 INST_DIRS = [
