@@ -18,17 +18,16 @@ module RDCL
     attr_accessor :mnp_packet
     attr_accessor :mnp_logic
     attr_accessor :log
+    attr_accessor :settings
     
     def initialize(settings, log = nil)
       super()
 
+      @settings = settings
       @serial = SerialLayerFactory.create
 
-      @async = AsyncBridgeLayer.new
-      @async.insert_above(@serial)
-
       @mnp_packet = MNPPacketLayer.new
-      @mnp_packet.insert_above(@async)
+      @mnp_packet.insert_above(@serial)
 
       @mnp_logic = MNPLogicalLayer.new
       @mnp_logic.insert_above(@mnp_packet)
@@ -40,8 +39,10 @@ module RDCL
       else
         @dock_layer.insert_above(@mnp_logic)
       end
+    end
 
-      @serial.connect(settings["serial_port"], settings["serial_speed"])
+    def connect
+      @serial.connect(@settings["serial_port"], @settings["serial_speed"])
     end
     
   end

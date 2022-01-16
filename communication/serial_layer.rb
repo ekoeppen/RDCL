@@ -12,10 +12,6 @@ module RDCL
     def disconnect
     end
   
-    def read(count = nil)
-      return nil
-    end
-    
     def write(data)
     end
     

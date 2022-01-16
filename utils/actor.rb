@@ -1,3 +1,4 @@
+require "async"
 require "rdcl/utils/dfa.rb"
 
 module RDCL
@@ -7,7 +8,6 @@ module RDCL
     include DFA
   
     attr_accessor :message_queue
-    attr_accessor :thread
   
     def initialize
       init_automaton(:idle)
@@ -16,9 +16,7 @@ module RDCL
     end
     
     def run
-      @thread = Thread.start(self) do |actor|
-        actor.message_loop
-      end
+      message_loop
     end
   
     def process_message(message)

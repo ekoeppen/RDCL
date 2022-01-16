@@ -15,6 +15,7 @@ module RDCL
       @handle = IO.new(fd)
       @read_buffer = ""
       connected
+      receive
     end
     
     def disconnect
@@ -36,6 +37,12 @@ module RDCL
     
     def write(data)
       @handle.write(data)
+    end
+
+    def receive
+      loop do
+        @upper.receive(read)
+      end
     end
     
   end

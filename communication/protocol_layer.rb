@@ -23,14 +23,6 @@ module RDCL
       end
     end
   
-    def read(count = nil)
-      r = nil
-      if @lower
-        r = @lower.read(count) while r == ""
-      end
-      return r
-    end
-    
     def write(data)
       if @lower
         @lower.write(data) if @lower

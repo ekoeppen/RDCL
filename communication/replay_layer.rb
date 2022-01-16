@@ -16,9 +16,6 @@ module RDCL
     def disconnect
     end
   
-    def read
-    end
-    
     def read(count)
       if count == nil
         count = @replay_data.length

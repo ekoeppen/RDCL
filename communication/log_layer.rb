@@ -13,21 +13,6 @@ module RDCL
       @hex = hex
     end
   
-    def read(count = nil)
-      r = nil
-      if @lower
-        r = @lower.read(count)
-        puts ">>> ----- #{tag}"
-        if hex
-          puts r.hexdump
-        else
-          puts r.to_s
-        end
-        puts ">>> -----"
-      end
-      return r
-    end
-    
     def write(data)
       if @lower
         puts "<<< ----- #{tag}"

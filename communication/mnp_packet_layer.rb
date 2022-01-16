@@ -16,13 +16,11 @@ module RDCL
     ETX = 0x03
     
     attr_accessor :current_frame_data
-    attr :receive_mutex
     attr :crc_in
     attr :current_crc_in
     attr :crc_out
     
     def initialize
-      @receive_mutex = Mutex.new
       @current_frame_data = ""
       @packets = []
       @crc_in = CRC16.new
@@ -64,24 +62,6 @@ module RDCL
         #puts "#{s}(#{a}) -> #{new_state}"
         new_state
       end
-    end
-    
-    def read_frame
-      begin
-        @last_char = @lower.read(1)[0]
-      end until automaton_input(@last_char)
-    end
-
-    def read(count = nil)
-      p = ""
-      if count == nil
-        read_frame
-        @receive_mutex.synchronize do
-          p = MNPPacketFactory.from_binary_factory(@current_frame_data)
-          @current_frame_data.slice!(0, @current_frame_data.length)
-        end
-      end
-      return p
     end
     
     def write(p)

@@ -1,7 +1,6 @@
 require "rdcl/communication/protocol_layer.rb"
 require "rdcl/communication/mnp_packet.rb"
 require "rdcl/utils/dfa.rb"
-require "thread"
 
 module RDCL
 

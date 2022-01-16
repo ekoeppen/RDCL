@@ -2,6 +2,7 @@
 
 $LOAD_PATH.insert(0, "../../../")
 
+require "async"
 require "rdcl/link/serial_dock_link.rb"
 require "rdcl/link/app_cmds/app_cmd_install_package.rb"
 require "rdcl/link/dock_cmds/dock_cmd_factory.rb"
@@ -232,14 +233,25 @@ EOT
   end
 
   def start
-    run
-    @dock.run
     if @flags[:verbose]
       puts "Settings:"
       puts @settings.to_yaml
     end
     log "Waiting for connection on #{@settings['serial_port']}..."
-    @thread.join
+
+    Async do |task|
+      task.async do
+        run
+      end
+
+      task.async do
+        @dock.connect
+      end
+
+      task.async do
+        @dock.run
+      end
+    end
   end
   
   def show_stores

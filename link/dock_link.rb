@@ -48,7 +48,7 @@ module RDCL
       @command = b
       automaton_input(b)
     end
-    
+
   end
   
 end
