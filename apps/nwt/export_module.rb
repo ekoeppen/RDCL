@@ -4,6 +4,7 @@ module ExportModule
 
   attr_accessor :export_soupname
   attr_accessor :export_dir
+  attr_accessor :id
   
   def export_usage
     return <<EOT
@@ -33,6 +34,7 @@ EOT
     case [state, action.command]
     when [:idle, AppCmd::CONNECTED] then
       @dock.receive(AppCmd.new(AppCmd::GET_STORE_NAMES))
+      @id = 1000000
       state = :export
       @export_dir = @export_soupname if not @export_dir
       FileUtils.remove_dir(@export_dir) if File.exist?(@export_dir)
@@ -70,27 +72,13 @@ EOT
   end
   
   def export_handle_entry(data)
-    e = data[:translated].to_ruby
-
-    log "Entry:\n#{e.to_yaml}" if @flags[:verbose]
-    if e[:title]
-      puts "#{e[:title]}"
-    elsif e[:name]
-      puts "#{e[:name]}"
-    else
-      puts "ID: #{e[:_uniqueID]}"
-    end
-      
-    if e[:_uniqueID].class != Fixnum
-      File.open("entry.nsof", "wb+") { |f| f.write(data[:nsof]) }
-    end
-    basename = @export_dir + '/' +
-      @newton_stores[@current_store][:signature].to_s +
-      "-" + e[:_uniqueID].to_s 
-
+    id = data[:translated].get_slot("_uniqueID") || @id
+    puts "ID: #{id}"
+    basename = "#{@export_dir}/#{@newton_stores[@current_store][:signature]}-#{id}"
     File.open(basename + ".nsof", "wb") do |f|
       f.write(data[:nsof])
     end
+    @id += 1
   end
   
 end

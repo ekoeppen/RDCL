@@ -20,7 +20,7 @@ class Platform
   end
   
   def Platform.isMSWin?
-    RbConfig::CONFIG["arch"] =~ /win/
+    RbConfig::CONFIG["arch"] =~ /mswin/
   end
 
   def Platform.settings_file

@@ -56,6 +56,11 @@ module RDCL
       @value.each {|element| r[element[0].to_ruby] = element[1].to_ruby}
       return r
     end
+
+    def get_slot(name)
+      e = @value.find {|element| element[0].value == name}
+      return e ? e[1].value : nil
+    end
     
   end
 
