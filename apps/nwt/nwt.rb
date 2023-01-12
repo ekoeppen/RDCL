@@ -42,7 +42,7 @@ class NWT < Actor
   
   def load_user_modules
     @user_modules = Array.new
-    if Dir.exists?(ENV["HOME"] + "/.nwt")
+    if Dir.exist?(ENV["HOME"] + "/.nwt")
       Dir[ENV["HOME"] + "/.nwt/*_module.rb"].each do |f|
         full_name = File.basename(f).gsub(/(^|_)(.)/) { $2.upcase }[0..-4] 
         short_name = File.basename(f).gsub("_module.rb", "")

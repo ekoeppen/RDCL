@@ -46,10 +46,9 @@ class String
       if str == "\0"*16     # if the 16 bytes are all zero
 
         if (!sparse) || (sparse &&  lines == 1 && rest == 0)
-          str.tr!("\000-\037\177-\377",'.')
           out += sprintf( "%08x    %s %8s %8s %8s    %s\n", 
             address, self[i..i+3].unpack('H8')[0], self[i+4..i+7].unpack('H8')[0],
-            self[i+8..i+11].unpack('H8')[0], self[i+12..i+15].unpack('H8')[0], str)
+            self[i+8..i+11].unpack('H8')[0], self[i+12..i+15].unpack('H8')[0], str.gsub(/[^[:print:]]/,'.'))
         else
           out += "  ....      00 .. 00 00 .. 00 00 .. 00 00 .. 00    ................\n" if first
           first = false
@@ -57,10 +56,9 @@ class String
 
         else  # print string which is not all zeros
 
-          str.tr!("\000-\037\177-\377",'.')
           out += sprintf( "%08x    %8s %8s %8s %8s    %s\n", 
             address, self[i..i+3].unpack('H8')[0], self[i+4..i+7].unpack('H8')[0],
-            self[i+8..i+11].unpack('H8')[0], self[i+12..i+15].unpack('H8')[0], str)
+            self[i+8..i+11].unpack('H8')[0], self[i+12..i+15].unpack('H8')[0], str.gsub(/[^[:print:]]/,'.'))
           first = true
         end
         i += 16; address += 16; lines -= 1
@@ -83,9 +81,8 @@ class String
           out += "  "
         end
         str = self[j..selfsize]
-        str.tr!("\000-\037\177-\377",'.')
         out += " " * (4 - chunks2+1)
-        out += sprintf("  %s\n", str)
+        out += sprintf("  %s\n", str.gsub(/[^[:print:]]/,'.'))
       end
     end
     
